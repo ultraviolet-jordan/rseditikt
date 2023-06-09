@@ -15,9 +15,7 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
-import javafx.scene.text.Font
-import javafx.scene.text.FontPosture
-import javafx.scene.text.FontWeight
+import rseditikt.Constants
 import rseditikt.gui.editor.fields.standard.StandardPane
 
 /**
@@ -36,7 +34,7 @@ object EditorPane : SplitPane() {
             "Add rectangle",
             "Add line",
         ).map(::Button).onEach {
-            it.font = Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 12.0)
+            it.font = Constants.VerdanaBold12
             it.maxWidth = Double.MAX_VALUE
             it.prefWidth = 200.0
             it.maxHeight = 50.0
@@ -68,7 +66,11 @@ object EditorPane : SplitPane() {
     }
 
     private fun createInterfaceCS2HooksFields(): ScrollPane {
-        val list = arrayOf(
+        val box = VBox().also {
+            it.spacing = 1.0
+        }
+
+        arrayOf(
             "onload",
             "onclick",
             "onhold",
@@ -81,22 +83,17 @@ object EditorPane : SplitPane() {
             "onrelease2",
             "onmouseover2",
             "onmouseleave2",
-        ).associateWith { HBox() }.onEach {
-            val onLoadLabel = Label(it.key).also { label ->
-                label.padding = Insets(5.0, 5.0, 5.0, 1.0)
-                label.font = Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 12.0)
-                HBox.setHgrow(label, Priority.ALWAYS)
+        ).associateWith { HBox() }.onEach { entry ->
+            val label = Label(entry.key).also {
+                it.padding = Insets(5.0, 5.0, 5.0, 1.0)
+                it.font = Constants.VerdanaBold12
+                HBox.setHgrow(it, Priority.ALWAYS)
             }
-            val onLoadTextField = TextField().also { field ->
-                HBox.setHgrow(field, Priority.ALWAYS)
+            val input = TextField().also {
+                HBox.setHgrow(it, Priority.ALWAYS)
             }
-            it.value.children.addAll(onLoadLabel, onLoadTextField)
-        }
-
-        val box = VBox().also {
-            it.spacing = 1.0
-            it.children.addAll(list.values)
-        }
+            entry.value.children.addAll(label, input)
+        }.also { box.children.addAll(it.values) }
 
         return ScrollPane(box).also {
             it.fitToWidthProperty().set(true)

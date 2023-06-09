@@ -6,7 +6,7 @@ plugins {
 }
 
 application {
-    mainClass.set("com.example.rseditikt.EditorKt")
+    mainClass.set("rseditikt.EditorKt")
 }
 
 javafx {
