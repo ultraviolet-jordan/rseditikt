@@ -168,10 +168,7 @@ class InterfaceEntryTypeProvider @Inject constructor(
         }
         return Array(length) {
             val alphaNumeric = readBoolean()
-            ClientScript2Hook(
-                alphaNumeric = alphaNumeric,
-                value = if (alphaNumeric) readStringCp1252NullTerminated() else readInt().toString()
-            )
+            ClientScript2Hook(alphaNumeric, if (alphaNumeric) readStringCp1252NullTerminated() else readInt().toString())
         }
     }
 
