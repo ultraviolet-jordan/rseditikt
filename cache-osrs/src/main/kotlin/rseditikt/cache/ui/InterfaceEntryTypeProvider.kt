@@ -135,6 +135,8 @@ class InterfaceEntryTypeProvider @Inject constructor(
         entry.varTransmitTriggers = readClientScript2HookTriggers()
         entry.invTransmitTriggers = readClientScript2HookTriggers()
         entry.statTransmitTriggers = readClientScript2HookTriggers()
+
+        release()
         return entry
     }
 
@@ -143,6 +145,7 @@ class InterfaceEntryTypeProvider @Inject constructor(
     }
 
     private fun ByteBuf.readIf1(entry: InterfaceEntryType): InterfaceEntryType {
+        release()
         return entry
     }
 
