@@ -1,4 +1,6 @@
 /.idea/
 /.gradle/
 /build/
+/cache/build/
+/cache-osrs/build/
 /gui/build/
