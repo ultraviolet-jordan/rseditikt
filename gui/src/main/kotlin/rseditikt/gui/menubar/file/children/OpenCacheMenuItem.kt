@@ -12,6 +12,7 @@ import javafx.scene.layout.Priority
 import javafx.stage.DirectoryChooser
 import javafx.stage.Stage
 import rseditikt.cache.CacheStore
+import rseditikt.gui.EditorVariables
 import java.nio.file.Path
 
 /**
@@ -20,7 +21,8 @@ import java.nio.file.Path
 @Singleton
 class OpenCacheMenuItem @Inject constructor(
     stage: Stage,
-    cache: CacheStore
+    cache: CacheStore,
+    editorVariables: EditorVariables
 ) : MenuItem("Open Cache") {
     init {
         onAction = EventHandler {
@@ -29,8 +31,20 @@ class OpenCacheMenuItem @Inject constructor(
                 cache.open(path)
             } catch (exception: Exception) {
                 handleOpenCacheException(path, exception)
+            } finally {
+                handleOpenCacheSuccessful(path)
+                editorVariables.cachePath = path.toString()
             }
         }
+    }
+
+    private fun handleOpenCacheSuccessful(path: Path) {
+        val alert = Alert(Alert.AlertType.INFORMATION).also {
+            it.title = "Success"
+            it.headerText = "Cache successfully opened."
+            it.contentText = "The chosen directory was: $path. Please note this directory is now currently in use by this editor."
+        }
+        alert.show()
     }
 
     private fun handleOpenCacheException(path: Path, exception: Exception) {
